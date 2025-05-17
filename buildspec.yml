@@ -2,26 +2,42 @@ version: 0.2
 
 phases:
   install:
+    runtime-version:
+      python: 3.14
     commands:
-      - pip install -r requirements.txt  # Instalar dependencias
+      - pip install --upgrade pip
+      - pip install -r requirements.txt
   pre_build:
     commands:
-      - echo Running tests...  # Mensaje para mostrar en el log
+      - echo Running tests..
+      - pytest --maxfail=1 --disable-warnings --tb=short 
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 948529748515.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
-      - pytest --maxfail=1 --disable-warnings --tb=short  # Ejecutar pruebas, detener al primer fallo, ocultar advertencias y mostrar traceback corto
+      - echo Build started on `date`
+      - echo Building the Docker image...          
+      - docker build -t black-mail-list .
+      - docker tag black-mail-list:latest 948529748515.dkr.ecr.us-east-1.amazonaws.com/black-mail-list:latest
   post_build:
     commands:
-     - |
-      if [ "$CODEBUILD_BUILD_SUCCEEDING" == "0" ]; then
-        echo "Build fallido, no se empacará ni se subirá nada."
-        exit 1
-      fi
-      echo "Empaquetando artefacto..."
-      zip -r artifact.zip .
-      echo "Subiendo artifact.zip a S3..."
-      aws s3 cp artifact.zip s3://bucket-deploy-1-1/artifact.zip
-
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      - docker push 948529748515.dkr.ecr.us-east-1.amazonaws.com/black-mail-list:latest
+      - echo Writing Image Definitions file...
+      - echo '[{"name":"Container-mail-app","imageUri":"948529748515.dkr.ecr.us-east-1.amazonaws.com/black-mail-list:latest"}]' > imagedefinitions.json
+      - echo '{"ImageURI":"948529748515.dkr.ecr.us-east-1.amazonaws.com/black-mail-list:latest"}' > imageDetail.json
+      - cat imagedefinitions.json 
 artifacts:
   files:
-    - artifact.zip
+    - '**/*'
+    - imagedefinitions.json
+    - imageDetail.json
+  secondary-artifacts:
+    DefinitionArtifact:
+      files:
+        - appspec.json
+        - taskdef.json
+    ImageArtifact:
+      files:
+        - imageDetail.json

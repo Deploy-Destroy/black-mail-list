@@ -11,6 +11,7 @@ phases:
     commands:
       - echo Running tests..
       - pytest --maxfail=1 --disable-warnings --tb=short 
+      - echo Directioner.2203 | docker login -u jessicadpaezj --password-stdin
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 948529748515.dkr.ecr.us-east-1.amazonaws.com
   build:

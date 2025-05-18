@@ -32,8 +32,6 @@ phases:
 artifacts:
   files:
     - '**/*'
-    - appspec.json
-    - taskdef.json
     - imagedefinitions.json
     - imageDetail.json
   secondary-artifacts:

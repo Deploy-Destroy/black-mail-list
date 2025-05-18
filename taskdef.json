@@ -10,7 +10,7 @@
           }
         ],
 
-        "image": "<IMAGE1_NAME>",
+        "image": "<IMAGE2_NAME>",
         "essential": true,
         "name": "Container-mail-app"
       }

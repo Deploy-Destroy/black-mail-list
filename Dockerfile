@@ -1,7 +1,4 @@
-FROM alpine:3.14
-
-RUN apk add py3-pip \
-    && pip install --upgrade pip
+FROM python:3.14
 
 WORKDIR /app
 COPY . /app/
@@ -12,6 +9,7 @@ EXPOSE 5000
 
 # Ejecuta la aplicación
 CMD ["python3", "application.py"]
+
 
 ##Confguración New Relic
 # RUN pip install newrelic

@@ -1,7 +1,4 @@
-FROM alpine:3.14
-
-RUN apk add py3-pip \
-    && pip install --upgrade pip
+FROM python:3.14
 
 WORKDIR /app
 COPY . /app/

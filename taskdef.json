@@ -10,7 +10,7 @@
           }
         ],
 
-        "image": "<IMAGE2_NAME>",
+        "image": "948529748515.dkr.ecr.us-east-1.amazonaws.com/black-mail-list:latest",
         "essential": true,
         "name": "Container-mail-app"
       }

@@ -5,7 +5,7 @@
         "TargetService": {
           "Type": "AWS::ECS::Service",
           "Properties": {
-            "TaskDefinition": "<TASK_DEFINITION>",
+            "TaskDefinition": "arn:aws:ecs:us-east-1:948529748515:task-definition/Task-mail-app:2",
             "LoadBalancerInfo": {
               "ContainerName": "Container-mail-app",
               "ContainerPort": 5000

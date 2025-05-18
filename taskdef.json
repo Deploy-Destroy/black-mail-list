@@ -9,8 +9,7 @@
             "containerPort": 5000
           }
         ],
-
-        "image": "948529748515.dkr.ecr.us-east-1.amazonaws.com/black-mail-list:latest",
+        "image": "<IMAGE1_NAME>",
         "essential": true,
         "name": "Container-mail-app"
       }

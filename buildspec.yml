@@ -29,36 +29,11 @@ phases:
       - echo '[{"name":"Container-mail-app","imageUri":"948529748515.dkr.ecr.us-east-1.amazonaws.com/black-mail-list:latest"}]' > imagedefinitions.json
       - echo '{"ImageURI":"948529748515.dkr.ecr.us-east-1.amazonaws.com/black-mail-list:latest"}' > imageDetail.json
       - cat imagedefinitions.json 
-      - echo Generating taskdef.json...
-      - |
-        cat > taskdef.json <<EOF
-        {
-          "executionRoleArn": "arn:aws:iam::948529748515:role/ecsTaskExecutionRole",
-          "containerDefinitions": [
-            {
-              "name": "Container-mail-app",
-              "image": "948529748515.dkr.ecr.us-east-1.amazonaws.com/black-mail-list:latest",
-              "essential": true,
-              "portMappings": [
-                {
-                  "containerPort": 5000,
-                  "hostPort": 5000,
-                  "protocol": "tcp"
-                }
-              ]
-            }
-          ],
-          "requiresCompatibilities": ["FARGATE"],
-          "networkMode": "awsvpc",
-          "cpu": "512",
-          "memory": "1024",
-          "family": "Task-mail-app"
-        }
-        EOF
-
 artifacts:
   files:
     - '**/*'
+    - appspec.json
+    - taskdef.json
     - imagedefinitions.json
     - imageDetail.json
   secondary-artifacts:
